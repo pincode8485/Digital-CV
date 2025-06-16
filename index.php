@@ -1,3 +1,35 @@
+<?php
+$errorMsg = '';
+$conn = new mysqli("localhost", "root", "", "cv_db");
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST["email"] ?? '');
+    $nama = trim($_POST["nama"] ?? '');
+    $komentar = trim($_POST["komentar"] ?? '');
+    if (empty($email) || empty($nama) || empty($komentar)) {
+        $errorMsg = "Semua kolom (email, nama, komentar) wajib diisi!";
+    } else {
+        $email = $conn->real_escape_string($email);
+        $nama = $conn->real_escape_string($nama);
+        $komentar = $conn->real_escape_string($komentar);
+        $sql = "INSERT INTO komentar (email, nama, komentar) VALUES ('$email', '$nama', '$komentar')";
+        $conn->query($sql);
+        header("Location: " . strtok($_SERVER["REQUEST_URI"], "?") . "#comment-section");
+        $conn->close();
+        exit();
+    }
+}
+$result = $conn->query("SELECT email, nama, komentar, tanggal FROM komentar ORDER BY id DESC");
+$comments = [];
+if ($result && $result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $comments[] = $row;
+    }
+}
+$conn->close();
+?>
 
 <!DOCTYPE html>
 <html>
@@ -25,12 +57,13 @@
 
             <section class="section--page">
         
-                <div id="socials--list">
-                    <a href="https://www.youtube.com/@thermality_win" target="_blank">Youtube</a>
-                    <a href="https://www.linkedin.com/in/adamisneckdeep/" target="_blank">Linkedin</a>
-                    <a href="https://github.com/pincode8485" target="_blank">Github</a>
-                    <a href="./assets/resume.pdf" target="_blank">Download Resume</a>
-                </div>
+<div id="socials--list">
+    <a href="https://www.youtube.com/@thermality_win" target="_blank">Youtube</a>
+    <a href="https://www.linkedin.com/in/adamisneckdeep/" target="_blank">Linkedin</a>
+    <a href="https://github.com/pincode8485" target="_blank">Github</a>
+    <a href="produk.php" target="_blank">Produk</a>
+</div>
+
             </section>
 
             <section class="section--page">
@@ -119,10 +152,40 @@
 
             </section>
 
+<section class="section--page" id="comment-section">
+    <h2>Komentar</h2>
+        <div class="line-break"></div>
+    <?php if (!empty($errorMsg)): ?>
+        <div style="color:red;margin-bottom:10px;"><?= $errorMsg ?></div>
+    <?php endif; ?>
+    <form method="post" action="#comment-section" class="comment-form">
+        <input type="email" name="email" placeholder="Email Anda" required>
+        <input type="text" name="nama" placeholder="Nama Anda" required>
+        <textarea name="komentar" placeholder="Tulis komentar..." required rows="4"></textarea>
+        <button type="submit">Kirim</button>
+    </form>
+    <div id="comments-list" style="margin-top:20px;">
+        <?php if (count($comments) > 0): ?>
+            <?php foreach($comments as $row): ?>
+                <div class="comment-item">
+                    <b><?= htmlspecialchars($row["nama"]) ?></b>
+                    <span style="color:#888;font-size:12px;"><?= htmlspecialchars($row["email"]) ?></span>
+                    <span style="color:#888;font-size:12px;">(<?= $row["tanggal"] ?>)</span><br>
+                    <?= nl2br(htmlspecialchars($row["komentar"])) ?>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <i>Belum ada komentar.</i>
+        <?php endif; ?>
+    </div>
+</section>
+
         <div id="theme-switcher">
             <div class="theme" id="theme-light" data-theme="light"></div>
             <div class="theme" id="theme-dark" data-theme="dark"></div>
         </div>
+
+        
 
     <script src="js/theme-switcher.js"></script>
 
@@ -133,36 +196,36 @@
 
 formbutton("create", {
   action: "https://formspree.io/f/xvgrrvea",
-  title: "Buku Tamu",
+  title: "Kirim Pesan ke Adam",
   fields: [
     { 
       type: "email", 
-      label: "Email:", 
+      label: "Email Anda", 
       name: "email",
       required: true,
-      placeholder: "your@email.com"
+      placeholder: "contoh@email.com"
     },
     {
       type: "text",
-      label: "Nama:",
+      label: "Nama Lengkap",
       name: "name",
       required: true,
       placeholder: "Nama Anda"
     },
     {
       type: "textarea",
-      label: "Pesan:",
+      label: "Pesan",
       name: "message",
-      placeholder: "Apa yang ingin Anda sampaikan?",
+      placeholder: "Tulis pesan Anda di sini...",
     },
-    { type: "submit" }      
+    { type: "submit", label: "Kirim" }      
   ],
   styles: {
     title: {
-      backgroundColor: "gray"
+      backgroundColor: "#444"
     },
     button: {
-      backgroundColor: "gray"
+      backgroundColor: "#444"
     }
   }
 });
