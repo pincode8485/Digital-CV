@@ -18,7 +18,7 @@
 
                 <div>
                     <h1 id="user-name">Mochamad Adam Miftah Faridl</h1>
-                    <p id="bio">Mahasiswa Sistem Informasi di Universitas Ma'soem yang berfokus di bidang cybersecurity, dengan minat pada pengujian keamanan sistem, analisis kerentanan, dan perlindungan jaringan</a>.</p>
+                    <p id="bio">Mahasiswa Sistem Informasi di Universitas Ma'soem yang berfokus di bidang cybersecurity, dengan minat pada pengujian keamanan sistem, analisis kerentanan, dan perlindungan jaringan.</p>
                     <p id="email">👉 adamisneckdeep@gmail.com</p>
                 </div>  
             </section>
@@ -37,7 +37,7 @@
                 <h2>🛠️ Keahlian & Kualifikasi</h2>
                 <ul id="qualifications--list">
                     <li>✔️ Pengujian penetrasi (manual & berbasis tools)</li>
-                    <li>✔️ Analisis kerentanan sistem & aplikasi/li>
+                    <li>✔️ Analisis kerentanan sistem & aplikasi</li>
                     <li>✔️ Pemahaman dasar rekayasa balik & malware</li>
                     <li>✔️ Konfigurasi firewall, IDS/IPS</li>
                     <li>✔️ Peserta aktif Bug Bounty (tingkat pemula-menengah)</li>                                        
@@ -61,7 +61,7 @@
                 <div class="card--work-history">
                     <strong>🚧 MAGANG CYBERSECURITY | Universitas Padjajaran Jatinangor</strong>
                     <p>3/2023 - 7/2023</p>
-                    <p><strong>[Divisi IT]</strong> saya terlibat langsung dalam berbagai aktivitas yang berkaitan dengan pengamanan sistem informasi kampus. Fokus utama kegiatan magang adalah analisis keamanan jaringan, pengujian terhadap kerentanan situs internal, serta pemberian rekomendasi terhadap risiko keamanan yang ditemukan.</a></p>
+                    <p><strong>[Divisi IT]</strong> saya terlibat langsung dalam berbagai aktivitas yang berkaitan dengan pengamanan sistem informasi kampus. Fokus utama kegiatan magang adalah analisis keamanan jaringan, pengujian terhadap kerentanan situs internal, serta pemberian rekomendasi terhadap risiko keamanan yang ditemukan.</p>
                     <strong>[Tanggung Jawab dan Pencapaian]</strong>
                     <ul>
                         <li>Melakukan pengujian keamanan pada sistem informasi akademik dan web fakultas.</li>
@@ -119,20 +119,6 @@
 
             </section>
 
-            <section class="section--page">
-                <h2>Buku Tamu</h2>
-
-            <form id="guestbook-form">
-                <input type="email" id="guest-email" placeholder="Email Address" required>
-                <input type="text" id="guest-name" placeholder="Nama Anda" required>
-                <textarea id="guest-message" placeholder="Pesan" required></textarea>
-                <button type="submit">Kirim</button>
-            </form>
-        
-                <div id="guestbook-entries"></div>
-            </section>
-       
-        </div>
         <div id="theme-switcher">
             <div class="theme" id="theme-light" data-theme="light"></div>
             <div class="theme" id="theme-dark" data-theme="dark"></div>
@@ -140,22 +126,47 @@
 
     <script src="js/theme-switcher.js"></script>
 
-    <script>
-        const form = document.getElementById('guestbook-form');
-        const entriesDiv = document.getElementById('guestbook-entries');
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('guest-email').value;
-            const name = document.getElementById('guest-name').value;
-            const message = document.getElementById('guest-message').value;
-            const entry = document.createElement('div');
-            entry.className = 'guestbook-entry';
-            entry.innerHTML = `<strong>${name}</strong> (<a href="mailto:${email}">${email}</a>): <span>${message}</span>`;
-            entriesDiv.prepend(entry);
-            form.reset();
-        });
-    </script>
-    
+<script src="https://formspree.io/js/formbutton-v1.min.js" defer></script>
+
+<script>
+  window.formbutton=window.formbutton||function(){(formbutton.q=formbutton.q||[]).push(arguments)};
+
+formbutton("create", {
+  action: "https://formspree.io/f/xvgrrvea",
+  title: "Buku Tamu",
+  fields: [
+    { 
+      type: "email", 
+      label: "Email:", 
+      name: "email",
+      required: true,
+      placeholder: "your@email.com"
+    },
+    {
+      type: "text",
+      label: "Nama:",
+      name: "name",
+      required: true,
+      placeholder: "Nama Anda"
+    },
+    {
+      type: "textarea",
+      label: "Pesan:",
+      name: "message",
+      placeholder: "Apa yang ingin Anda sampaikan?",
+    },
+    { type: "submit" }      
+  ],
+  styles: {
+    title: {
+      backgroundColor: "gray"
+    },
+    button: {
+      backgroundColor: "gray"
+    }
+  }
+});
+</script>
 </body>
 </html>
 
